@@ -5,7 +5,7 @@ FROM python:3.9
 WORKDIR /app
 
 # Copie o arquivo de requisitos para o contêiner
-COPY requirements.txt .
+COPY trending-topics/requirements.txt  requirements.txt
 
 # Instale as dependências do projeto
 RUN pip install -r requirements.txt
