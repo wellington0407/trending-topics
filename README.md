@@ -50,7 +50,4 @@ Isso iniciará sua aplicação dentro do contêiner e mapeará a porta 8000 do c
 6. **Acesse a API**: Após iniciar o contêiner, acesse a API em http://localhost:8000/trending-topics/ para visualizar as tendências de pesquisa.
 
 ## Contribuição
-Contribuições são bem-vindas! Sinta-se à vontade para enviar pull requests ou abrir issues para relatar problemas ou sugerir melhorias.
-
-## Licença
-Este projeto é licenciado sob a MIT License.
+Contribuições são bem-vindas! Sinta-se à vontade para enviar pull requests ou abrir issues para relatar problemas ou sugerir melhorias
