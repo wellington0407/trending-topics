@@ -2,24 +2,38 @@ import json
 import time
 import asyncio
 from fastapi import FastAPI, HTTPException
-from pytrends.request import TrendReq
 import plotly.graph_objs as go
 from fastapi.responses import HTMLResponse
+from pytrends.request import TrendReq as UTrendReq
 
 app = FastAPI()
-pytrends = TrendReq(hl='BR', tz=120)
+
+GET_METHOD = 'get'
+
+# Subclasse TrendReq com cabeçalho personalizado
+class TrendReq(UTrendReq):
+    def _get_data(self, url, method=GET_METHOD, trim_chars=0, **kwargs):
+        # Adicionando cabeçalho personalizado
+        return super()._get_data(url, method=GET_METHOD, trim_chars=trim_chars, headers=headers, **kwargs)
+
+# Cabeçalho personalizado
+headers = {
+    'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/58.0.3029.110 Safari/537.3'
+}
 
 async def get_google_trends(keyword, timeframe='today 5-y', geo='BR'):
     while True:
         try:
+            pytrends = TrendReq(hl='BR', tz=120)
             pytrends.build_payload(kw_list=[keyword], timeframe=timeframe, geo=geo)
             interest_over_time_df = pytrends.interest_over_time()
             return interest_over_time_df
         except Exception as e:
             print(f"Erro ao consultar Google Trends para {keyword}: {e}")
-            await asyncio.sleep(5)  # Esperar 3 segundos antes de tentar novamente
+            await asyncio.sleep(5)  
 
 async def get_top_trending_topics(geo='BR'):
+    pytrends = TrendReq(hl='BR', tz=120)
     trending_topics = pytrends.trending_searches(pn='brazil')
     return trending_topics
 
