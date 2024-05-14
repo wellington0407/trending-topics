@@ -4,11 +4,11 @@ FROM python:3.9
 # Defina o diretório de trabalho dentro do contêiner
 WORKDIR /app
 
-# Adicione o arquivo de requisitos para o contêiner
+# Copie o arquivo de requisitos para o contêiner
 COPY requirements.txt .
 
 # Instale as dependências do projeto
-RUN pip install -r requirements.txt
+RUN pip install --no-cache-dir -r requirements.txt
 
 # Adicione todo o conteúdo do diretório atual para o diretório de trabalho no contêiner
 ADD . .
