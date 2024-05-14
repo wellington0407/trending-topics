@@ -9,6 +9,8 @@ Este projeto consiste em uma aplicação web que utiliza o FastAPI para criar um
 - **Visualização de Dados**: Cria gráficos interativos das tendências de pesquisa usando o Plotly.
 - **Apresentação na Web**: Disponibiliza a visualização das tendências de pesquisa através de uma API web.
 
+link de demostração: https://app-brjilebi.b4a.run/trending-topics/
+
 ## Como Executar
 
 Para executar este projeto, siga as etapas abaixo:
