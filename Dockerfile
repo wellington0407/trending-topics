@@ -1,14 +1,15 @@
 # Use uma imagem base do Python
 FROM python:3.9
 
-# Defina o diretório de trabalho dentro do contêiner
-WORKDIR /app
-
 # Copie o arquivo de requisitos para o contêiner
 COPY requirements.txt .
 
 # Instale as dependências do projeto
 RUN pip install -r requirements.txt
+
+# Defina o diretório de trabalho dentro do contêiner
+WORKDIR /app
+
 
 # Copie todo o conteúdo do diretório atual para o diretório de trabalho no contêiner
 COPY . .
