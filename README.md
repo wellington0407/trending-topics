@@ -15,12 +15,12 @@ Este projeto consiste em uma aplicação web que utiliza o FastAPI para criar um
 
 ```bash
 pip install -r requirements.txt
-
+```
 2.Inicie o servidor FastAPI:
 
 ```bash
-Copiar código
 uvicorn main:app --reload
+```
 
 3.Acesse a API em http://localhost:8000/trending-topics/ para visualizar as tendências de pesquisa.
 
