@@ -17,7 +17,7 @@ async def get_google_trends(keyword, timeframe='today 5-y', geo='BR'):
             return interest_over_time_df
         except Exception as e:
             print(f"Erro ao consultar Google Trends para {keyword}: {e}")
-            await asyncio.sleep(1)  # Esperar 3 segundos antes de tentar novamente
+            await asyncio.sleep(5)  # Esperar 3 segundos antes de tentar novamente
 
 async def get_top_trending_topics(geo='BR'):
     trending_topics = pytrends.trending_searches(pn='brazil')
