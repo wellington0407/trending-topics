@@ -9,11 +9,11 @@ from fastapi.responses import HTMLResponse
 app = FastAPI()
 pytrends = TrendReq(hl='BR', tz=120)
 
-async def get_google_trends(keywords, timeframe='today 5-y', geo='BR'):
+async def get_google_trends(keywords, timeframe='today 12-m', geo='BR'):
     while True:
         try:
             trends_data = {}
-            for keyword in keywords[:5]:  
+            for keyword in keywords[:10]:  
                 pytrends.build_payload(kw_list=[keyword], timeframe=timeframe, geo=geo)
                 interest_over_time_df = pytrends.interest_over_time()
                 trends_data.update(extract_trend_data(keyword, interest_over_time_df))
@@ -69,7 +69,7 @@ async def read_trending_topics():
         keywords_html += f'<li class="keyword-list-item">{keyword}</li>'
     keywords_html += "</ul>"
     
-    plot_html = plot_trend_data({keyword: trend_data_json[keyword] for keyword in keywords[:5]})
+    plot_html = plot_trend_data({keyword: trend_data_json[keyword] for keyword in keywords[:10]})
     
     final_html = f"{keywords_html}<br>{plot_html}"
     
