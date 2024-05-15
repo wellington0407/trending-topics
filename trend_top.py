@@ -9,7 +9,7 @@ from fastapi.responses import HTMLResponse
 app = FastAPI()
 pytrends = TrendReq(hl='BR', tz=120)
 
-async def get_google_trends(keywords, timeframe='today 12-m', geo='BR'):
+async def get_google_trends(keywords, timeframe='today 5-y', geo='BR'):
     while True:
         try:
             trends_data = {}
