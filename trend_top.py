@@ -54,18 +54,35 @@ async def read_trending_topics():
     keywords = [i[0] for i in top_trends.values.tolist()]
     trend_data_json = await get_google_trends(keywords, geo=geo)
     
-    # Construir uma lista HTML das palavras-chave
-    keywords_html = "<h2>Palavras-chave tendência:</h2>"
-    keywords_html += "<ul>"
+    keywords_html = """
+    <style>
+        .keyword-list {
+            list-style-type: none;
+            padding: 0;
+            margin: 0;
+        }
+        .keyword-list-item {
+            margin-bottom: 8px;
+            padding: 6px 10px;
+            background-color: #f2f2f2;
+            border-radius: 5px;
+            display: inline-block;
+            font-size: 14px;
+            color: #333;
+        }
+    </style>
+    <h2>Trending Topics:</h2>
+    <ul class="keyword-list">
+    """
     for keyword in keywords:
-        keywords_html += f"<li>{keyword}</li>"
+        keywords_html += f'<li class="keyword-list-item">{keyword}</li>'
     keywords_html += "</ul>"
     
     # Plotar o gráfico
     plot_html = plot_trend_data({keyword: trend_data_json[keyword] for keyword in keywords[:5]})
     
     # Combinar a lista de palavras-chave e o gráfico no HTML final
-    final_html = keywords_html + plot_html
+    final_html = f"{keywords_html}<br>{plot_html}"
     
     return final_html
 
