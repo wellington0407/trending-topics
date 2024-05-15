@@ -1,0 +1,15 @@
+.keyword-list {
+    list-style-type: none;
+    padding: 0;
+    margin: 0;
+}
+
+.keyword-list-item {
+    margin-bottom: 8px;
+    padding: 6px 10px;
+    background-color: #f2f2f2;
+    border-radius: 5px;
+    display: inline-block;
+    font-size: 14px;
+    color: #333;
+}

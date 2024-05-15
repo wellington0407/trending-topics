@@ -22,11 +22,9 @@ async def get_google_trends(keywords, timeframe='today 5-y', geo='BR'):
             print(f"Erro ao consultar Google Trends: {e}")
             await asyncio.sleep(10)  
 
-
 async def get_top_trending_topics(geo='BR'):
     trending_topics = pytrends.trending_searches(pn='brazil')
     return trending_topics
-
 
 def extract_trend_data(keyword, trends_data):
     if trends_data is not None and not trends_data.empty:
@@ -37,7 +35,6 @@ def extract_trend_data(keyword, trends_data):
     else:
         print(f"Nenhum dado de tendência disponível para a palavra-chave: {keyword}")
         return {}
-    
 
 def plot_trend_data(trend_data):
     plots_html = []
@@ -50,7 +47,6 @@ def plot_trend_data(trend_data):
         plots_html.append(fig.to_html(full_html=False, include_plotlyjs='cdn'))
     return ''.join(plots_html)
 
-
 @app.get("/trending-topics/", response_class=HTMLResponse)
 async def read_trending_topics():
     geo = 'BR'
@@ -58,23 +54,14 @@ async def read_trending_topics():
     keywords = [i[0] for i in top_trends.values.tolist()]
     trend_data_json = await get_google_trends(keywords, geo=geo)
     
-    keywords_html = """
-    <style>
-        .keyword-list {
-            list-style-type: none;
-            padding: 0;
-            margin: 0;
-        }
-        .keyword-list-item {
-            margin-bottom: 8px;
-            padding: 6px 10px;
-            background-color: #f2f2f2;
-            border-radius: 5px;
-            display: inline-block;
-            font-size: 14px;
-            color: #333;
-        }
-    </style>
+    with open("style/styles.css", "r") as css_file:
+        css_content = css_file.read()
+    
+    keywords_html = f"""
+    <head>
+        <title>Trending Topics</title>
+        <style>{css_content}</style>
+    </head>
     <h2>Trending Topics:</h2>
     <ul class="keyword-list">
     """
@@ -82,14 +69,11 @@ async def read_trending_topics():
         keywords_html += f'<li class="keyword-list-item">{keyword}</li>'
     keywords_html += "</ul>"
     
-
     plot_html = plot_trend_data({keyword: trend_data_json[keyword] for keyword in keywords[:5]})
     
-
     final_html = f"{keywords_html}<br>{plot_html}"
     
     return final_html
-
 
 if __name__ == "__main__":
     import uvicorn
