@@ -13,18 +13,20 @@ async def get_google_trends(keywords, timeframe='today 5-y', geo='BR'):
     while True:
         try:
             trends_data = {}
-            for keyword in keywords[:5]:  # Limitando a 5 primeiras palavras-chave
+            for keyword in keywords[:5]:  
                 pytrends.build_payload(kw_list=[keyword], timeframe=timeframe, geo=geo)
                 interest_over_time_df = pytrends.interest_over_time()
                 trends_data.update(extract_trend_data(keyword, interest_over_time_df))
             return trends_data
         except Exception as e:
             print(f"Erro ao consultar Google Trends: {e}")
-            await asyncio.sleep(10)  # Esperar 10 segundos antes de tentar novamente
+            await asyncio.sleep(10)  
+
 
 async def get_top_trending_topics(geo='BR'):
     trending_topics = pytrends.trending_searches(pn='brazil')
     return trending_topics
+
 
 def extract_trend_data(keyword, trends_data):
     if trends_data is not None and not trends_data.empty:
@@ -35,6 +37,7 @@ def extract_trend_data(keyword, trends_data):
     else:
         print(f"Nenhum dado de tendência disponível para a palavra-chave: {keyword}")
         return {}
+    
 
 def plot_trend_data(trend_data):
     plots_html = []
@@ -46,6 +49,7 @@ def plot_trend_data(trend_data):
         fig = go.Figure(data=data, layout=layout)
         plots_html.append(fig.to_html(full_html=False, include_plotlyjs='cdn'))
     return ''.join(plots_html)
+
 
 @app.get("/trending-topics/", response_class=HTMLResponse)
 async def read_trending_topics():
@@ -78,10 +82,10 @@ async def read_trending_topics():
         keywords_html += f'<li class="keyword-list-item">{keyword}</li>'
     keywords_html += "</ul>"
     
-    # Plotar o gráfico
+
     plot_html = plot_trend_data({keyword: trend_data_json[keyword] for keyword in keywords[:5]})
     
-    # Combinar a lista de palavras-chave e o gráfico no HTML final
+
     final_html = f"{keywords_html}<br>{plot_html}"
     
     return final_html
