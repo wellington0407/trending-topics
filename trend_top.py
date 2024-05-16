@@ -21,7 +21,7 @@ async def get_google_trends(keyword, timeframe='today 5-y', geo='BR', max_retrie
                 return trend_data
         except Exception as e:
             print(f"Erro ao consultar Google Trends: {e}")
-    print(f"Dados de tendência indefinido: {keyword}")
+    print(f"Dado de tendência indefinido: {keyword}")
     return None
 
 @app.get("/trending-topics/", response_class=HTMLResponse)
@@ -54,7 +54,7 @@ async def read_trending_topics():
         
         final_html = f"{keywords_html}<br>{plot_html}"
     else:
-        final_html = "<h2>No trend data available for the chosen keyword</h2>"
+        final_html = "<h2>Dado de tendência indefinido</h2>"
     
     return final_html
 
@@ -65,7 +65,7 @@ def extract_trend_data(keyword, trends_data):
         counts = daily_counts.values.tolist()
         return {'dates': dates, 'counts': counts}
     else:
-        print(f"No trend data available for the keyword: {keyword}")
+        print(f"Dado de tendência indefinido: {keyword}")
         return {}
 
 def plot_trend_data(trend_data):
