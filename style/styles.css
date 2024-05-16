@@ -1,8 +1,8 @@
 .keyword-list {
     list-style-type: none;
     padding: 0;
-    margin: 0 auto; /* Isso centraliza horizontalmente */
-    text-align: center; /* Isso centraliza o conteúdo dentro da lista */
+    margin: 0 auto; 
+    text-align: center; 
 }
 
 .keyword-list-item {
