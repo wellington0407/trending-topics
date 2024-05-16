@@ -21,7 +21,7 @@ async def get_google_trends(keyword, timeframe='today 5-y', geo='BR', max_retrie
                 return trend_data
         except Exception as e:
             print(f"Erro ao consultar Google Trends: {e}")
-    print(f"No trend data available for the keyword: {keyword}")
+    print(f"Dados de tendência indefinido: {keyword}")
     return None
 
 @app.get("/trending-topics/", response_class=HTMLResponse)
@@ -43,7 +43,7 @@ async def read_trending_topics():
             <title>Trending Topics</title>
             <style>{css_content}</style>
         </head>
-        <h2>All Trending Topics:</h2>
+        <h2>Trending Topics:</h2>
         <ul class="keyword-list">
         """
         
@@ -74,7 +74,7 @@ def plot_trend_data(trend_data):
         dates = data_info['dates']
         counts = data_info['counts']
         data = [go.Scatter(x=dates, y=counts, mode='lines+markers', name=keyword, line=dict(width=2), marker=dict(size=8))]
-        layout = go.Layout(title=f'Google Trends about: {keyword}', xaxis=dict(title='Date', tickfont=dict(size=14)), yaxis=dict(title='Count', tickfont=dict(size=14)), titlefont=dict(size=16))
+        layout = go.Layout(title=f'Google Trends: {keyword}', xaxis=dict(title='Date', tickfont=dict(size=14)), yaxis=dict(title='Count', tickfont=dict(size=14)), titlefont=dict(size=16))
         fig = go.Figure(data=data, layout=layout)
         plots_html.append(fig.to_html(full_html=False, include_plotlyjs='cdn'))
     return ''.join(plots_html)
