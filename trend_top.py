@@ -37,7 +37,7 @@ def plot_trend_data(trend_data):
         dates = data_info['dates']
         counts = data_info['counts']
         data = [go.Scatter(x=dates, y=counts, mode='lines+markers', name=keyword, line=dict(width=2), marker=dict(size=8))]
-        layout = go.Layout(title=f'Google Trends: {keyword}', xaxis=dict(title='Date', tickfont=dict(size=14)), yaxis=dict(title='Count', tickfont=dict(size=14)), titlefont=dict(size=16))
+        layout = go.Layout(title=f'Google Trends: {keyword}', xaxis=dict(title='Data', tickfont=dict(size=14)), yaxis=dict(title='Quantidade', tickfont=dict(size=14)), titlefont=dict(size=16))
         fig = go.Figure(data=data, layout=layout)
         plots_html.append(fig.to_html(full_html=False, include_plotlyjs='cdn'))
     return ''.join(plots_html)
