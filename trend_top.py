@@ -1,6 +1,7 @@
 import random
-from fastapi import FastAPI
+from fastapi import FastAPI, HTTPException
 from pytrends.request import TrendReq
+import plotly.graph_objs as go
 from fastapi.responses import HTMLResponse
 
 app = FastAPI()
@@ -21,6 +22,25 @@ async def get_google_trends(keyword, timeframe='today 5-y', geo='BR', max_retrie
         except Exception as e:
             print(f"Erro ao consultar Google Trends: {e}")
     return None
+
+def extract_trend_data(keyword, trends_data):
+    if trends_data is not None and not trends_data.empty:
+        daily_counts = trends_data[keyword].resample('D').sum()
+        dates = [str(date) for date in daily_counts.index]
+        counts = daily_counts.values.tolist()
+        return {'dates': dates, 'counts': counts}
+    return {}
+
+def plot_trend_data(trend_data):
+    plots_html = []
+    for keyword, data_info in trend_data.items():
+        dates = data_info['dates']
+        counts = data_info['counts']
+        data = [go.Scatter(x=dates, y=counts, mode='lines+markers', name=keyword, line=dict(width=2), marker=dict(size=8))]
+        layout = go.Layout(title=f'Google Trends: {keyword}', xaxis=dict(title='Date', tickfont=dict(size=14)), yaxis=dict(title='Count', tickfont=dict(size=14)), titlefont=dict(size=16))
+        fig = go.Figure(data=data, layout=layout)
+        plots_html.append(fig.to_html(full_html=False, include_plotlyjs='cdn'))
+    return ''.join(plots_html)
 
 @app.get("/trending-topics/", response_class=HTMLResponse)
 async def read_trending_topics():
@@ -55,14 +75,6 @@ async def read_trending_topics():
 
     return final_html
 
-def extract_trend_data(keyword, trends_data):
-    if trends_data is not None and not trends_data.empty:
-        daily_counts = trends_data[keyword].resample('D').sum()
-        dates = [str(date) for date in daily_counts.index]
-        counts = daily_counts.values.tolist()
-        return {'dates': dates, 'counts': counts}
-    return {}
-
 if __name__ == "__main__":
     import uvicorn
-    uvicorn.run(app, host="0.0.0.0", port=8000)
+    uvicorn.run(app, host="0.0.0.0", port=8001)
