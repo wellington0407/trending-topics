@@ -11,15 +11,18 @@ async def get_top_trending_topics(geo='BR'):
     trending_topics = pytrends.trending_searches(pn='brazil')
     return trending_topics
 
-async def get_google_trends(keyword, timeframe='today 5-y', geo='BR'):
-    try:
-        pytrends.build_payload(kw_list=[keyword], timeframe=timeframe, geo=geo)
-        interest_over_time_df = pytrends.interest_over_time()
-        trend_data = extract_trend_data(keyword, interest_over_time_df)
-        return trend_data
-    except Exception as e:
-        print(f"Erro ao consultar Google Trends: {e}")
-        return None
+async def get_google_trends(keyword, timeframe='today 5-y', geo='BR', max_retries=3):
+    for _ in range(max_retries):
+        try:
+            pytrends.build_payload(kw_list=[keyword], timeframe=timeframe, geo=geo)
+            interest_over_time_df = pytrends.interest_over_time()
+            trend_data = extract_trend_data(keyword, interest_over_time_df)
+            if trend_data:
+                return trend_data
+        except Exception as e:
+            print(f"Erro ao consultar Google Trends: {e}")
+    print(f"No trend data available for the keyword: {keyword}")
+    return None
 
 @app.get("/trending-topics/", response_class=HTMLResponse)
 async def read_trending_topics():
