@@ -40,8 +40,14 @@ async def read_trending_topics():
             <title>Trending Topics</title>
             <style>{css_content}</style>
         </head>
-        <h2>Trending Topic: {random_keyword}</h2>
+        <h2>All Trending Topics:</h2>
+        <ul class="keyword-list">
         """
+        
+        for keyword in keywords:
+            keywords_html += f'<li class="keyword-list-item">{keyword}</li>'
+        
+        keywords_html += "</ul>"
         
         final_html = f"{keywords_html}<br>{plot_html}"
     else:
